@@ -1,0 +1,4 @@
+beautifulsoup4==4.13.5
+colorama==0.4.6
+reportlab==4.4.3
+requests==2.32.5
