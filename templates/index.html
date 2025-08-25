@@ -1,19 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Web Vulnerability Scanner</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-
-<body>
+<div class="container">
     <h1>Web Vulnerability Scanner</h1>
-    <form method="post">
-        <input type="text" name="target_url" placeholder="Enter target URL" required>
+    <form id="scan-form">
+        <input type="text" name="target_url" placeholder="Enter target URL" required autofocus>
         <button type="submit">Scan</button>
     </form>
 
-    {% if result %}
-    <pre>{{ result }}</pre>
-    {% endif %}
-</body>
-</html>
+    <!-- Spinner -->
+    <div id="spinner" class="spinner" style="display:none;"></div>
+
+    <div class="results" id="results">
+        <h2>Scan Results:</h2>
+        <pre id="scan-output"></pre>
+    </div>
+</div>
+
+<script>
+document.getElementById('scan-form').onsubmit = function(e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    document.getElementById('spinner').style.display = 'block';
+    fetch('/scan', {
+        method: 'POST',
+        body: formData
+    }).then(response => response.text())
+      .then(html => {
+          document.getElementById('results').innerHTML = html;
+          document.getElementById('spinner').style.display = 'none';
+      });
+};
+</script>
