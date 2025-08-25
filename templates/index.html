@@ -1,31 +1,78 @@
-<div class="container">
-    <h1>Web Vulnerability Scanner</h1>
-    <form id="scan-form">
-        <input type="text" name="target_url" placeholder="Enter target URL" required autofocus>
-        <button type="submit">Scan</button>
-    </form>
-
-    <!-- Spinner -->
-    <div id="spinner" class="spinner" style="display:none;"></div>
-
-    <div class="results" id="results">
-        <h2>Scan Results:</h2>
-        <pre id="scan-output"></pre>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Vulnerability Scanner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 100px;
+        }
+        input[type="text"] {
+            width: 60%;
+            padding: 12px 20px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 24px;
+            outline: none;
+        }
+        input[type="submit"] {
+            padding: 12px 24px;
+            font-size: 18px;
+            margin-left: 8px;
+            border: none;
+            border-radius: 24px;
+            background-color: #4285f4;
+            color: white;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #357ae8;
+        }
+        .results {
+            margin-top: 50px;
+            text-align: left;
+            display: inline-block;
+            width: 70%;
+            max-width: 800px;
+        }
+        .result-item {
+            background-color: #fff;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            word-break: break-word;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 40px;
+            color: #202124;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Web Vulnerability Scanner</h1>
+        <form method="POST">
+            <input type="text" name="target" placeholder="Enter target URL..." required>
+            <input type="submit" value="Scan">
+        </form>
+        <div class="results">
+            {% if results %}
+                <h2>Scan Results:</h2>
+                {% for item in results %}
+                    <div class="result-item">{{ item }}</div>
+                {% endfor %}
+            {% endif %}
+        </div>
     </div>
-</div>
-
-<script>
-document.getElementById('scan-form').onsubmit = function(e) {
-    e.preventDefault();
-    var formData = new FormData(this);
-    document.getElementById('spinner').style.display = 'block';
-    fetch('/scan', {
-        method: 'POST',
-        body: formData
-    }).then(response => response.text())
-      .then(html => {
-          document.getElementById('results').innerHTML = html;
-          document.getElementById('spinner').style.display = 'none';
-      });
-};
-</script>
+</body>
+</html>
